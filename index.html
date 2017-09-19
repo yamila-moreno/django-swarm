@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en" prefix="og: http://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CLEAN MARKUP = GOOD KARMA.
+      Hi source code lover,
+
+      you're a curious person and a fast learner ;)
+      Let's make something beautiful together. Contribute on Github:
+      https://github.com/webslides/webslides
+
+      Thanks,
+      @jlantunez.
+    -->
+
+    <!-- SEO -->
+    <title>Cómo desplegar apliaciones Django en Swarm</title>
+    <meta name="description" content="Cómo desplegar apliaciones Django en Swarm">
+
+    <!-- URL CANONICAL -->
+    <!-- <link rel="canonical" href="http://your-url.com/"> -->
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,700,700i%7CMaitree:200,300,400,600,700&amp;subset=latin-ext" rel="stylesheet">
+
+    <!-- CSS WebSlides -->
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/webslides.css">
+
+    <!-- Optional - CSS SVG Icons (Font Awesome) -->
+    <link rel="stylesheet" type='text/css' media='all' href="static/css/svg-icons.css">
+
+    <!-- SOCIAL CARDS (ADD YOUR INFO) -->
+
+    <!-- FAVICONS -->
+    <link rel="shortcut icon" sizes="16x16" href="static/images/favicons/favicon.png">
+    <link rel="shortcut icon" sizes="32x32" href="static/images/favicons/favicon-32.png">
+    <link rel="apple-touch-icon icon" sizes="76x76" href="static/images/favicons/favicon-76.png">
+    <link rel="apple-touch-icon icon" sizes="120x120" href="static/images/favicons/favicon-120.png">
+    <link rel="apple-touch-icon icon" sizes="152x152" href="static/images/favicons/favicon-152.png">
+    <link rel="apple-touch-icon icon" sizes="180x180" href="static/images/favicons/favicon-180.png">
+    <link rel="apple-touch-icon icon" sizes="192x192" href="static/images/favicons/favicon-192.png">
+
+    <!-- Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#333333">
+
+<style>
+p.big {
+    font-size: 45px;
+    padding-top: 20px;
+}
+p.red {
+    color: red;
+}
+pre {
+	font-size: 25px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	line-height: 30px;
+}
+a {
+    color: black;
+}
+</style>
+
+  </head>
+  <body>
+    <main role="main">
+      <article id="webslides">
+        <!-- Quick Guide
+          - Each parent <section> in the <article id="webslides"> element is an individual slide.
+          - Vertical sliding = <article id="webslides" class="vertical">
+          - <div class="wrap"> = container 90% / <div class="wrap size-50"> = 45%;
+        -->
+
+        <section>
+         <span class="background-right-bottom" style="background-image:url('static/images/yamila.png')"></span>
+          <!--.wrap = container (width: 90%) -->
+          <div class="wrap aligncenter">
+            <h1><strong>Cómo desplegar aplicaciones Django en Swarm</strong></h1>
+            <p class="text-intro">Yamila Moreno</p>
+          <h2>
+            <svg class="github">
+              <use xlink:href="#fa-github"></use>
+            </svg>
+            <a href="https://github.com/yamila-moreno" target="_blank">yamila-moreno</a>
+          </h2>
+          <h2>
+            <svg class="link">
+              <use xlink:href="#fa-link"></use>
+            </svg>
+            <a href="https://moduslaborandi.net" target="_blank">https://moduslaborandi.net</a>
+          </h2>
+          <p><img src="static/images/qrcode.png" /></p>
+        </section>
+        <section class="bg-blue slide-top">
+            <h1>Principales componentes</h1>
+            <ul class="flexblock features">
+              <li>
+                  <h1>Back</h1>
+                  <p>Django Rest Framework, stateless</p>
+              </li>
+              <li>
+                <div>
+                  <h1>Front</h1>
+                  <p>Single Page Application</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h1>Base de datos</h1>
+                  <p>PostgreSQL</p>
+                </div>
+              </li>
+            </ul>
+        </section>
+        <section class="bg-blue slide-top">
+            <h1>Dockerizamos nuestras aplicaciones</h1>
+            <ul class="flexblock features">
+              <li>
+                  <h1>Back</h1>
+                  <p>Django Rest Framework, stateless</p>
+                  <p class="big red">+ Dockerfile</p>
+              </li>
+              <li>
+                <div>
+                  <h1>Front</h1>
+                  <p>Single Page Application</p>
+                  <p class="big red">+ Dockerfile</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h1>Base de datos</h1>
+                  <p>PostgreSQL</p>
+                </div>
+              </li>
+            </ul>
+        </section>
+        <section class="bg-blue slide-top">
+            <h1>Back > <em>Dockerfile</em></h1>
+            <pre style="background-color: white; color: black" class="content-left">
+            <code>
+FROM python:3.6-slim
+LABEL maintainer="Yamila Moreno"
+
+WORKDIR /
+
+# Install dependencies
+RUN apt-get update
+RUN apt-get install -y -qq curl vim
+
+# Install requirements
+COPY requirements.txt /routes_api/
+RUN pip install -r /routes_api/requirements.txt
+
+# Setup the application
+COPY . /routes_api
+
+WORKDIR /routes_api
+            </code>
+            </pre>
+        </section>
+        <section class="bg-blue slide-top">
+            <h1>Front > <em>Dockerfile</em></h1>
+            <pre style="background-color: white; color: black" class="content-left">
+            <code>
+FROM abiosoft/caddy:latest
+LABEL maintainer="Yamila Moreno"
+
+# Caddy config
+COPY Caddyfile /etc/Caddyfile
+COPY . /routes_front
+            </code>
+            </pre>
+        </section>
+        <section class="bg-blue slide-top">
+            <h1>Travis-CI</h1>
+            <ul class="flexblock features">
+              <li>
+                  <h1>Back</h1>
+                  <p>Django Rest Framework, stateless</p>
+                  <p class="big">Dockerfile</p>
+                  <p class="big red">+ .travis.yml</p>
+              </li>
+              <li>
+                <div>
+                  <h1>Front</h1>
+                  <p>Single Page Application</p>
+                  <p class="big">Dockerfile</p>
+                  <p class="big red">+ .travis.yml</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h1>Base de datos</h1>
+                  <p>PostgreSQL</p>
+                </div>
+              </li>
+            </ul>
+        </section>
+        <section class="bg-blue slide-top">
+            <h1>Back > <em>.travis.yml</em></h1>
+            <pre style="background-color: white; color: black" class="content-left">
+            <code>
+language: python
+python:
+  - "3.6"
+
+branches:
+  only:
+    - master
+
+env:
+  global:
+    - secure: "G+8KyEaXSDvcg..." # DOCKER_USER
+    - secure: "X1M4tt6zA6Y3L..." # DOCKER_PASS
+    - TEST_ENV=test_env
+
+before_script:
+  - docker build -f Dockerfile -t ryms/routes_api:latest .
+
+script:
+  - docker run -e TEST_ENV ryms/routes_api:latest pytest
+
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker push ryms/routes_api:latest
+            </code>
+            </pre>
+        </section>
+        <section class="bg-blue slide-top">
+            <h1>Front > <em>.travis.yml</em></h1>
+            <pre style="background-color: white; color: black" class="content-left">
+            <code>
+branches:
+  only:
+    - master
+
+env:
+  global:
+    - secure: "G+8KyEaXSDvcgUGG..." # DOCKER_USER
+    - secure: "X1M4tt6zA6Y3LCH4..." # DOCKER_PASS
+
+before_script:
+- docker build -f Dockerfile -t ryms/routes_front:latest .
+
+script:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker push ryms/routes_front:latest
+            </code>
+            </pre>
+        </section>
+        <section class="bg-blue slide-top">
+            <h1>Principales componentes</h1>
+            <ul class="flexblock features">
+              <li>
+                  <h1>Back</h1>
+                  <p>Django Rest Framework, stateless</p>
+                  <p class="big">Dockerfile</p>
+                  <p class="big">.travis.yml</p>
+              </li>
+              <li>
+                <div>
+                  <h1>Front</h1>
+                  <p>Single Page Application</p>
+                  <p class="big">Dockerfile</p>
+                  <p class="big">.travis.yml</p>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h1>Base de datos</h1>
+                  <p>PostgreSQL</p>
+                </div>
+              </li>
+            </ul>
+        </section>
+        <section class="bg-green slide-top">
+            <h1>¡A desplegar!</h1>
+            <ul class="flexblock features">
+              <li>
+                  <h1>Swarm Manager</h1>
+                  <p class="big" style="color: blue">+ docker-compose.yml</p>
+              </li>
+              <li>
+                  <h1>Swarm Worker</h1>
+              </li>
+              <li>
+                  <h1>Swarm Worker</h1>
+              </li>
+            </ul>
+        </section>
+        <section class="bg-green slide-top">
+            <h1><em>docker-compose.yml > PostgreSQL</em></h1>
+            <pre style="background-color: white; color: black" class="content-left">
+            <code>
+version: "3.3"
+
+services:
+  routes_db:
+    image: postgres:9.6
+    environment:
+      - "POSTGRES_DB=routes"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+            </code>
+            </pre>
+        </section>
+        <section class="bg-green slide-top">
+            <h1><em>docker-compose.yml > api</em></h1>
+            <div class="text-cols">
+            <pre style="background-color: white; color: black">
+            <code>
+services:
+    routes_db: [...]
+
+    routes_api:
+     image: ryms/routes_api:latest
+     volumes:
+       - static-data:/routes_api/static
+     environment:
+       POSTGRES_HOST: routes_db
+       POSTGRES_USER: postgres
+     command: >
+        bash -c
+        "export POSTGRES_DB=$$(< /run/secrets/POSTGRES_DB)
+        && python manage.py migrate
+        && python manage.py collectstatic --noinput
+        && gunicorn project.wsgi -b 0.0.0.0:8000"
+     deploy:
+       replicas: 3
+     secrets:
+       - POSTGRES_DB
+
+            </code>
+            </pre>
+            <pre style="background-color: white; color: black">
+            <code>
+services:
+    [...]
+
+volumes:
+    static-data:
+      driver: local
+
+secrets:
+    POSTGRES_DB:
+      external: true
+            </code>
+            </pre>
+            </div>
+        </section>
+        <section class="bg-green slide-top">
+            <h1><em>docker-compose.yml > front</em></h1>
+            <pre style="background-color: white; color: black" class="content-left">
+            <code>
+services:
+    routes_db: [...]
+
+    routes_api: [...]
+
+    routes_front:
+        image: ryms/routes_front:latest
+        volumes:
+          - static-data:/routes_api_static:ro
+        deploy:
+          replicas: 3
+
+   volumes:
+       static-data:
+         driver: local
+            </code>
+            </pre>
+        </section>
+        <section class="bg-purple slide-top">
+            <h1><em>docker-compose.yml > prometheus</em></h1>
+            <pre style="background-color: white; color: black">
+            <code>
+services:
+    routes_db: [...]
+    routes_api: [...]
+    routes_front: [...]
+    prometheus:
+        image: basi/prometheus-swarm:latest
+        ports:
+          - "9090:9090"
+        command: >
+          -config.file=/etc/prometheus/prometheus.yml
+          -storage.local.path=/prometheus
+          -web.console.libraries=/etc/prometheus/console_libraries
+          -web.console.templates=/etc/prometheus/consoles
+          -alertmanager.url=http://alertmanager:9093
+        deploy:
+          placement:
+            constraints:
+              - node.role == manager
+          resources:
+            limits:
+              cpus: '0.50'
+              memory: 1024M
+            </code>
+            </pre>
+        </section>
+        <section class="bg-purple slide-top">
+            <h1><em>docker-compose.yml > traefik</em></h1>
+            <div class="text-cols">
+                      <pre style="background-color: white; color: black">
+                      <code>
+services:
+  traefik:
+     image: traefik
+     command: --web --docker --docker.swarmmode --docker.watch --docker.domain=traefik --logLevel=DEBUG --web.metrics --web.metrics.prometheus
+     ports:
+       - "80:80"
+       - "8080:8080"
+     networks:
+       - traefik-net
+     volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
+       - /dev/null:/traefk.toml
+     labels:
+       - "traefik.enable=false"
+     deploy:
+       placement:
+         constraints:
+            - node.role == manager
+                      </code>
+                      </pre>
+                      <pre style="background-color: white; color: black">
+                      <code>
+services:
+
+      routes_api:
+        image: ryms/routes_api:latest
+        volumes:
+          - static-data:/routes_api/static
+        environment:
+          POSTGRES_HOST: routes_db
+          POSTGRES_USER: postgres
+        command: >
+           bash -c
+           '...
+           && gunicorn project.wsgi -b 0.0.0.0:8000'
+        networks:
+          - traefik-net
+        deploy:
+          replicas: 3
+          labels:
+            - "traefik.backend=routes_api"
+            - "traefik.port=8000"
+            - "traefik.frontend.rule=Host:routes.com;PathPrefix:/api,/admin"
+            - "traefik.enable=true"
+                      </code>
+                      </pre>
+            </div>
+        </section>
+        <section class="slide-top">
+          <div class="wrap aligncenter">
+            <h1><strong>¿Dudas?</strong></h1>
+            <h2>
+              <svg class="github">
+                <use xlink:href="#fa-github"></use>
+              </svg>
+              <a href="https://github.com/yamila-moreno/routes_api" target="_blank">yamila-moreno/routes_api</a>
+            </h2>
+            <h2>
+              <svg class="github">
+                <use xlink:href="#fa-github"></use>
+              </svg>
+              <a href="https://github.com/yamila-moreno/routes_front" target="_blank">yamila-moreno/routes_front</a>
+            </h2>
+            <h2>
+              <svg class="github">
+                <use xlink:href="#fa-github"></use>
+              </svg>
+              <a href="https://github.com/yamila-moreno/routes_deploy" target="_blank">yamila-moreno/routes_deploy</a>
+            </h2>
+            <p><img src="static/images/qrcode.png" /></p>
+        </section>
+        <section>
+            <span class="background" style="background-image:url('static/images/gracias.gif')"></span>
+        </section>
+
+      </article>
+      <!-- end article -->
+    </main>
+    <!-- end main -->
+
+   <!-- A global footer
+
+     <footer role="contentinfo">
+      <div class="wrap">
+        <p>An <a href="https://github.com/webslides/webslides">open source solution</a>, by <a href="https://twitter.com/webslides">@webslides</a>.</p>
+      </div>
+    </footer>  -->
+
+    <!-- Required -->
+    <script src="static/js/webslides.js"></script>
+    <script>
+      window.ws = new WebSlides();
+    </script>
+
+    <!-- OPTIONAL - svg-icons.js (fontastic.me - Font Awesome as svg icons) -->
+    <script defer src="static/js/svg-icons.js"></script>
+
+  </body>
+</html>
