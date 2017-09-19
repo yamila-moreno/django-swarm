@@ -54,6 +54,9 @@ p.big {
 p.red {
     color: red;
 }
+.flexblock.features li p {
+    margin-bottom: 20px;
+}
 pre {
 	font-size: 25px;
 	font-style: normal;
@@ -63,6 +66,14 @@ pre {
 }
 a {
     color: black;
+}
+h1 {
+  font-size: 100px;
+  margin-bottom: 40px;
+}
+h2 {
+  font-size: 80px;
+  margin-bottom: 40px;
 }
 </style>
 
@@ -81,7 +92,6 @@ a {
           <!--.wrap = container (width: 90%) -->
           <div class="wrap aligncenter">
             <h1><strong>Cómo desplegar aplicaciones Django en Swarm</strong></h1>
-            <p class="text-intro">Yamila Moreno</p>
           <h2>
             <svg class="github">
               <use xlink:href="#fa-github"></use>
@@ -101,18 +111,18 @@ a {
             <ul class="flexblock features">
               <li>
                   <h1>Back</h1>
-                  <p>Django Rest Framework, stateless</p>
+                  <p class="big">Django Rest Framework, stateless</p>
               </li>
               <li>
                 <div>
                   <h1>Front</h1>
-                  <p>Single Page Application</p>
+                  <p class="big">Single Page Application</p>
                 </div>
               </li>
               <li>
                 <div>
                   <h1>Base de datos</h1>
-                  <p>PostgreSQL</p>
+                  <p class="big">PostgreSQL</p>
                 </div>
               </li>
             </ul>
@@ -122,20 +132,20 @@ a {
             <ul class="flexblock features">
               <li>
                   <h1>Back</h1>
-                  <p>Django Rest Framework, stateless</p>
+                  <p class="big">Django Rest Framework, stateless</p>
                   <p class="big red">+ Dockerfile</p>
               </li>
               <li>
                 <div>
                   <h1>Front</h1>
-                  <p>Single Page Application</p>
+                  <p class="big">Single Page Application</p>
                   <p class="big red">+ Dockerfile</p>
                 </div>
               </li>
               <li>
                 <div>
                   <h1>Base de datos</h1>
-                  <p>PostgreSQL</p>
+                  <p class="big">PostgreSQL</p>
                 </div>
               </li>
             </ul>
@@ -182,14 +192,14 @@ COPY . /routes_front
             <ul class="flexblock features">
               <li>
                   <h1>Back</h1>
-                  <p>Django Rest Framework, stateless</p>
+                  <p class="big">Django Rest Framework, stateless</p>
                   <p class="big">Dockerfile</p>
                   <p class="big red">+ .travis.yml</p>
               </li>
               <li>
                 <div>
                   <h1>Front</h1>
-                  <p>Single Page Application</p>
+                  <p class="big">Single Page Application</p>
                   <p class="big">Dockerfile</p>
                   <p class="big red">+ .travis.yml</p>
                 </div>
@@ -197,7 +207,7 @@ COPY . /routes_front
               <li>
                 <div>
                   <h1>Base de datos</h1>
-                  <p>PostgreSQL</p>
+                  <p class="big">PostgreSQL</p>
                 </div>
               </li>
             </ul>
@@ -259,14 +269,14 @@ script:
             <ul class="flexblock features">
               <li>
                   <h1>Back</h1>
-                  <p>Django Rest Framework, stateless</p>
+                  <p class="big">Django Rest Framework, stateless</p>
                   <p class="big">Dockerfile</p>
                   <p class="big">.travis.yml</p>
               </li>
               <li>
                 <div>
                   <h1>Front</h1>
-                  <p>Single Page Application</p>
+                  <p class="big">Single Page Application</p>
                   <p class="big">Dockerfile</p>
                   <p class="big">.travis.yml</p>
                 </div>
@@ -274,7 +284,7 @@ script:
               <li>
                 <div>
                   <h1>Base de datos</h1>
-                  <p>PostgreSQL</p>
+                  <p class="big">PostgreSQL</p>
                 </div>
               </li>
             </ul>
@@ -283,7 +293,7 @@ script:
             <h1>¡A desplegar!</h1>
             <ul class="flexblock features">
               <li>
-                  <h1>Swarm Manager</h1>
+                  <h1>Swarm Mngr</h1>
                   <p class="big" style="color: blue">+ docker-compose.yml</p>
               </li>
               <li>
